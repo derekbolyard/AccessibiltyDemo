@@ -7,10 +7,10 @@
   gap: 1rem
 
 .entry
-  background: white
+  background: var(--neutral-100)
   padding: 1rem
-  border-radius: 8px
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1)
+  @include rounded
+  @include shadow
 
 .fail-fields
   display: flex
@@ -22,9 +22,10 @@
   margin-top: 1rem
   padding: 0.5rem 1rem
   background: var(--secondary-color)
-  color: white
+  color: var(--neutral-100)
   border: none
-  border-radius: 4px
+  border-radius: var(--base-radius)
+  @include shadow
 
 .bulk
   margin-top: 2rem

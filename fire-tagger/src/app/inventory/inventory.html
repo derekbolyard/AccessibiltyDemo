@@ -1,4 +1,4 @@
-<section class="inventory">
+<section class="inventory container">
   <header class="toolbar">
     <input type="text" placeholder="Search" [(ngModel)]="searchTerm" (input)="filter()" aria-label="Search"/>
     <select [(ngModel)]="filters.location" (change)="filter()" aria-label="Location filter">
@@ -17,8 +17,8 @@
     <button (click)="openLabelGenerator()" class="label-btn">Labels</button>
   </header>
 
-  <div class="grid">
-    <article *ngFor="let item of filtered" class="card">
+  <div class="grid" role="list">
+    <article *ngFor="let item of filtered" class="card" role="listitem">
       <h3>{{item.tag}}</h3>
       <p>{{item.type}} - {{item.status}}</p>
       <p>{{item.location.company}} / {{item.location.site}} / {{item.location.area}}</p>

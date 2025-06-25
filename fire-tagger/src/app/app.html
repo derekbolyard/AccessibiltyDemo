@@ -1,9 +1,15 @@
-<nav class="nav">
+<header class="nav" role="banner">
   <a class="brand" routerLink="/">FireTagger</a>
-  <div class="spacer"></div>
-  <a routerLink="/scan" class="link">Scan</a>
-  <a routerLink="/inventory" class="link">Inventory</a>
-  <a routerLink="/inspection" class="link">Inspection</a>
-  <a routerLink="/report" class="link">Report</a>
-</nav>
-<router-outlet></router-outlet>
+  <button class="menu-toggle" (click)="menuOpen = !menuOpen" aria-label="Toggle navigation">☰</button>
+  <nav [class.open]="menuOpen" role="navigation">
+    <ul>
+      <li><a routerLink="/scan" class="link">Scan</a></li>
+      <li><a routerLink="/inventory" class="link">Inventory</a></li>
+      <li><a routerLink="/inspection" class="link">Inspection</a></li>
+      <li><a routerLink="/report" class="link">Report</a></li>
+    </ul>
+  </nav>
+</header>
+<main id="main" role="main" class="container">
+  <router-outlet></router-outlet>
+</main>

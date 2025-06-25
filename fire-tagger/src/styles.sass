@@ -1,19 +1,82 @@
 // @import removed due to offline build restrictions
 
 :root
-  --primary-color: #ff5733
-  --secondary-color: #2d9cdb
-  --accent-color: #ff3366
-  --dark: #1a1a1a
-  --light: #f2f2f2
+  // Brand palette
+  --primary-color: #C62828
+  --secondary-color: #1565C0
+  --accent-color: #F9A825
+  --neutral-100: #ffffff
+  --neutral-900: #121212
+  // Typography
   --heading-font: 'Playfair Display', serif
   --body-font: 'Inter', sans-serif
+  --base-radius: 16px
+  --base-shadow: 0 2px 8px rgba(0,0,0,0.15)
+  --base-gap: 8px
 
 body
   font-family: var(--body-font)
+  font-size: 18px
+  line-height: 1.6
   margin: 0
-  background: var(--light)
-  color: var(--dark)
+  background: var(--neutral-100)
+  color: var(--neutral-900)
 
 a
   text-decoration: none
+
+h1, h2, h3, h4, h5
+  font-family: var(--heading-font)
+  margin-top: 0
+  font-weight: 700
+
+button, [type='button'], [type='submit']
+  cursor: pointer
+  border: none
+  border-radius: var(--base-radius)
+  padding: calc(var(--base-gap) * 1.5) calc(var(--base-gap) * 2)
+  font-family: inherit
+  background: var(--secondary-color)
+  color: var(--neutral-100)
+  transition: background 0.2s
+
+button:hover, button:focus
+  background: var(--primary-color)
+  outline: none
+
+*:focus-visible
+  outline: 2px solid var(--accent-color)
+  outline-offset: 2px
+
+@media (prefers-reduced-motion: reduce)
+  *
+    animation: none !important
+    transition: none !important
+
+// Utility mixins
+@mixin rounded($r: var(--base-radius))
+  border-radius: $r
+
+@mixin shadow
+  box-shadow: var(--base-shadow)
+
+.container
+  max-width: 1200px
+  margin: 0 auto
+  padding: 0 calc(var(--base-gap) * 2)
+
+.skip-link
+  position: absolute
+  left: -999px
+  top: auto
+  width: 1px
+  height: 1px
+  overflow: hidden
+
+.skip-link:focus
+  left: calc(var(--base-gap) * 2)
+  top: var(--base-gap)
+  width: auto
+  height: auto
+  padding: calc(var(--base-gap) * 1.5)
+  @include shadow
