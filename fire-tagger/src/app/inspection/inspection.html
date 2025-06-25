@@ -1,0 +1,26 @@
+<section class="inspection">
+  <h2>Inspection Workflow</h2>
+  <div class="list">
+    <article *ngFor="let item of items" class="entry">
+      <h3>{{item.tag}}</h3>
+      <label>
+        <input type="radio" name="status-{{item.tag}}" (change)="mark(item.tag, 'Pass')"> Pass
+      </label>
+      <label>
+        <input type="radio" name="status-{{item.tag}}" (change)="mark(item.tag, 'Fail')"> Fail
+      </label>
+      <input type="file" accept="image/*" (change)="setPhoto(item.tag, $event)" aria-label="Photo upload" />
+      <div class="fail-fields" *ngIf="isFail(item.tag)">
+        <input type="text" placeholder="Reason" [(ngModel)]="getRecord(item.tag).reason" required>
+        <input type="text" placeholder="Corrective Action" [(ngModel)]="getRecord(item.tag).action" required>
+        <input type="date" placeholder="Retest Date" [(ngModel)]="getRecord(item.tag).retest" required>
+      </div>
+    </article>
+  </div>
+  <button class="save-btn" (click)="save()">Save Inspections</button>
+  <div class="bulk">
+    <h3>Bulk Close-Out</h3>
+    <input type="date" [(ngModel)]="bulkDate" aria-label="Service date">
+    <button (click)="bulkService()">Mark All Serviced</button>
+  </div>
+</section>
