@@ -1,14 +1,16 @@
-<section class="inspection">
+<section class="inspection container">
   <h2>Inspection Workflow</h2>
-  <div class="list">
-    <article *ngFor="let item of items" class="entry">
+  <div class="list" role="list">
+    <article *ngFor="let item of items" class="entry" role="listitem">
       <h3>{{item.tag}}</h3>
-      <label>
-        <input type="radio" name="status-{{item.tag}}" (change)="mark(item.tag, 'Pass')"> Pass
-      </label>
-      <label>
-        <input type="radio" name="status-{{item.tag}}" (change)="mark(item.tag, 'Fail')"> Fail
-      </label>
+      <div role="radiogroup" class="status-group">
+        <label>
+          <input type="radio" name="status-{{item.tag}}" (change)="mark(item.tag, 'Pass')"> Pass
+        </label>
+        <label>
+          <input type="radio" name="status-{{item.tag}}" (change)="mark(item.tag, 'Fail')"> Fail
+        </label>
+      </div>
       <input type="file" accept="image/*" (change)="setPhoto(item.tag, $event)" aria-label="Photo upload" />
       <div class="fail-fields" *ngIf="isFail(item.tag)">
         <input type="text" placeholder="Reason" [(ngModel)]="getRecord(item.tag).reason" required>

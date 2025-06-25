@@ -5,5 +5,5 @@
   <p *ngIf="!scanning">Use your camera to capture the extinguisher tag.</p>
   <button class="start-btn" (click)="openCamera()" *ngIf="!scanning">Open Camera</button>
   <button class="capture-btn" (click)="capture()" *ngIf="scanning">Capture</button>
-  <p class="result" *ngIf="result">{{result}}</p>
+  <p class="result" *ngIf="result" aria-live="polite">{{result}}</p>
 </section>
