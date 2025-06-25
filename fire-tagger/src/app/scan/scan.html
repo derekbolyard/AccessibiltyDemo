@@ -1,5 +1,9 @@
 <section class="scan">
   <h2>Scan Tag</h2>
-  <p>Use your mobile camera to capture the extinguisher tag.</p>
-  <button class="start-btn">Open Camera</button>
+  <video #video *ngIf="scanning" class="preview" muted></video>
+  <canvas #canvas hidden></canvas>
+  <p *ngIf="!scanning">Use your camera to capture the extinguisher tag.</p>
+  <button class="start-btn" (click)="openCamera()" *ngIf="!scanning">Open Camera</button>
+  <button class="capture-btn" (click)="capture()" *ngIf="scanning">Capture</button>
+  <p class="result" *ngIf="result">{{result}}</p>
 </section>
