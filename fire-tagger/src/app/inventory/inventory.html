@@ -1,0 +1,30 @@
+<section class="inventory">
+  <header class="toolbar">
+    <input type="text" placeholder="Search" [(ngModel)]="searchTerm" (input)="filter()" aria-label="Search"/>
+    <select [(ngModel)]="filters.location" (change)="filter()" aria-label="Location filter">
+      <option value="">All Locations</option>
+      <option *ngFor="let l of locations" [value]="l">{{l}}</option>
+    </select>
+    <select [(ngModel)]="filters.type" (change)="filter()" aria-label="Type filter">
+      <option value="">All Types</option>
+      <option *ngFor="let t of types" [value]="t">{{t}}</option>
+    </select>
+    <select [(ngModel)]="filters.status" (change)="filter()" aria-label="Status filter">
+      <option value="">All Statuses</option>
+      <option *ngFor="let s of statuses" [value]="s">{{s}}</option>
+    </select>
+    <button (click)="openImport()" class="import-btn">Import</button>
+    <button (click)="openLabelGenerator()" class="label-btn">Labels</button>
+  </header>
+
+  <div class="grid">
+    <article *ngFor="let item of filtered" class="card">
+      <h3>{{item.tag}}</h3>
+      <p>{{item.type}} - {{item.status}}</p>
+      <p>{{item.location.company}} / {{item.location.site}} / {{item.location.area}}</p>
+    </article>
+  </div>
+
+  <import-dialog *ngIf="importing" (done)="closeImport($event)"></import-dialog>
+  <label-generator *ngIf="labeling" (close)="labeling=false"></label-generator>
+</section>

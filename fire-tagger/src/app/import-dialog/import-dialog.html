@@ -1,0 +1,6 @@
+<div class="dialog" role="dialog" aria-modal="true">
+  <h2>Import Inventory</h2>
+  <input type="file" accept=".csv,.xls,.xlsx" (change)="fileSelected($event)" aria-label="Inventory file">
+  <p>Upload a CSV/XLS file with columns: tag,type,status,company,site,area.</p>
+  <button (click)="done.emit(null)" class="close-btn">Close</button>
+</div>
