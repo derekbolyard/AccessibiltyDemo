@@ -1,3 +1,5 @@
+@use '../../mixins' as mixins
+
 .inspection
   padding: 1rem
 
@@ -9,8 +11,8 @@
 .entry
   background: var(--neutral-100)
   padding: 1rem
-  @include rounded
-  @include shadow
+  @include mixins.rounded
+  @include mixins.shadow
 
 .fail-fields
   display: flex
@@ -25,7 +27,7 @@
   color: var(--neutral-100)
   border: none
   border-radius: var(--base-radius)
-  @include shadow
+  @include mixins.shadow
 
 .bulk
   margin-top: 2rem

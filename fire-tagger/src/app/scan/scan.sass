@@ -1,3 +1,5 @@
+@use '../../mixins' as mixins
+
 .scan
   text-align: center
   padding: 2rem
@@ -13,7 +15,7 @@
   border: none
   border-radius: var(--base-radius)
   margin-top: 1rem
-  @include shadow
+  @include mixins.shadow
   transition: background .2s
 
 .start-btn:hover, .capture-btn:hover,

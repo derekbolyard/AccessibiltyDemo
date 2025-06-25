@@ -1,4 +1,4 @@
-// @import removed due to offline build restrictions
+@use './mixins'
 
 :root
   // Brand palette
@@ -53,13 +53,6 @@ button:hover, button:focus
     animation: none !important
     transition: none !important
 
-// Utility mixins
-@mixin rounded($r: var(--base-radius))
-  border-radius: $r
-
-@mixin shadow
-  box-shadow: var(--base-shadow)
-
 .container
   max-width: 1200px
   margin: 0 auto
@@ -79,4 +72,4 @@ button:hover, button:focus
   width: auto
   height: auto
   padding: calc(var(--base-gap) * 1.5)
-  @include shadow
+  @include mixins.shadow

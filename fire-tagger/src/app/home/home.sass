@@ -1,3 +1,5 @@
+@use '../../mixins' as mixins
+
 .hero
   text-align: center
   padding: 6rem 1rem
@@ -30,7 +32,7 @@
   background: var(--primary-color)
   color: var(--neutral-100)
   border-radius: var(--base-radius)
-  @include shadow
+  @include mixins.shadow
   transition: transform .2s
 
 .cta:hover, .cta:focus

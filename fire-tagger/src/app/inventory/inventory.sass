@@ -1,3 +1,5 @@
+@use '../../mixins' as mixins
+
 .inventory
   padding: 1rem
 
@@ -15,8 +17,8 @@
 .card
   background: var(--neutral-100)
   padding: 1rem
-  @include rounded
-  @include shadow
+  @include mixins.rounded
+  @include mixins.shadow
 
 .import-btn, .label-btn
   background: var(--secondary-color)
@@ -24,4 +26,4 @@
   border: none
   padding: 0.5rem 1rem
   border-radius: var(--base-radius)
-  @include shadow
+  @include mixins.shadow
