@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet, RouterLink } from '@angular/router';
+import { Router, RouterOutlet, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -10,4 +10,19 @@ import { RouterOutlet, RouterLink } from '@angular/router';
 export class App {
   protected title = 'fire-tagger';
   public menuOpen = false;
+
+  constructor(private router: Router) {}
+
+  toggleMenu(): void {
+    this.menuOpen = !this.menuOpen;
+  }
+
+  closeMenu(): void {
+    this.menuOpen = false;
+  }
+
+  quickScan(): void {
+    this.closeMenu();
+    this.router.navigate(['/scan']);
+  }
 }

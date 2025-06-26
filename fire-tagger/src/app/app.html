@@ -1,15 +1,73 @@
+<a href="#main" class="skip-link">Skip to main content</a>
+
 <header class="nav" role="banner">
-  <a class="brand" routerLink="/">FireTagger</a>
-  <button class="menu-toggle" (click)="menuOpen = !menuOpen" aria-label="Toggle navigation">☰</button>
-  <nav [class.open]="menuOpen" role="navigation">
-    <ul>
-      <li><a routerLink="/scan" class="link">Scan</a></li>
-      <li><a routerLink="/inventory" class="link">Inventory</a></li>
-      <li><a routerLink="/inspection" class="link">Inspection</a></li>
-      <li><a routerLink="/report" class="link">Report</a></li>
-    </ul>
-  </nav>
+  <div class="nav-container">
+    <a class="brand" routerLink="/" aria-label="FireTagger - Home">
+      <svg class="brand-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <path d="M16 2L20 12H28L22 18L24 28L16 22L8 28L10 18L4 12H12L16 2Z" fill="currentColor"/>
+      </svg>
+      <span class="brand-text">FireTagger</span>
+    </a>
+    
+    <button 
+      class="menu-toggle" 
+      (click)="toggleMenu()" 
+      [attr.aria-expanded]="menuOpen"
+      aria-controls="main-navigation"
+      aria-label="Toggle navigation menu"
+    >
+      <span class="hamburger" [class.open]="menuOpen">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+    </button>
+    
+    <nav 
+      id="main-navigation"
+      class="nav-menu" 
+      [class.open]="menuOpen" 
+      role="navigation"
+      [attr.aria-hidden]="!menuOpen"
+    >
+      <ul class="nav-list">
+        <li><a routerLink="/scan" class="nav-link" (click)="closeMenu()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          Scan
+        </a></li>
+        <li><a routerLink="/inventory" class="nav-link" (click)="closeMenu()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M9 11H15M9 15H15M17 21H7C5.89543 21 5 20.1046 5 19V5C5 3.89543 5.89543 3 7 3H12.5858C12.851 3 13.1054 3.10536 13.2929 3.29289L19.7071 9.70711C19.8946 9.89464 20 10.149 20 10.4142V19C20 20.1046 19.1046 21 18 21H17Z" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          Inventory
+        </a></li>
+        <li><a routerLink="/inspection" class="nav-link" (click)="closeMenu()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M9 12L11 14L15 10M20.618 5.984C20.8531 5.54213 21.0037 5.04857 21.0037 4.5C21.0037 2.567 19.4367 1 17.5037 1C16.955 1 16.4614 1.15065 16.0195 1.38577M20.618 5.984L16.0195 1.38577M20.618 5.984C20.8056 6.37711 20.8056 6.83823 20.618 7.23134L12.0557 22.356C11.6982 23.0192 10.8018 23.0192 10.4443 22.356L1.88202 7.23134C1.49491 6.44823 2.05669 5.5 2.94374 5.5H7.50374M16.0195 1.38577C15.5776 1.15065 15.084 1 14.5353 1C12.6023 1 11.0353 2.567 11.0353 4.5C11.0353 5.04857 11.1859 5.54213 11.421 5.984L7.50374 5.5M16.0195 1.38577L7.50374 5.5" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          Inspection
+        </a></li>
+        <li><a routerLink="/report" class="nav-link" (click)="closeMenu()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M9 17H15M9 13H15M9 9H10M13 3H8.2C7.0799 3 6.51984 3 6.09202 3.21799C5.71569 3.40973 5.40973 3.71569 5.21799 4.09202C5 4.51984 5 5.0799 5 6.2V17.8C5 18.9201 5 19.4802 5.21799 19.908C5.40973 20.2843 5.71569 20.5903 6.09202 20.782C6.51984 21 7.0799 21 8.2 21H15.8C16.9201 21 17.4802 21 17.908 20.782C18.2843 20.5903 18.5903 20.2843 18.782 19.908C19 19.4802 19 18.9201 19 17.8V9M13 3L19 9M13 3V9H19" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          Report
+        </a></li>
+      </ul>
+      
+      <div class="nav-actions">
+        <button class="nav-cta btn-accent" (click)="quickScan()">
+          Quick Scan
+        </button>
+      </div>
+    </nav>
+  </div>
 </header>
-<main id="main" role="main" class="container">
+
+<main id="main" role="main" class="main-content">
   <router-outlet></router-outlet>
 </main>
+
+<div class="mobile-overlay" [class.active]="menuOpen" (click)="closeMenu()"></div>

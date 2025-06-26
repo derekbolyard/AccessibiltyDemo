@@ -1,75 +1,323 @@
 @use './mixins'
 
+// Import fonts
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap')
+
 :root
-  // Brand palette
-  --primary-color: #C62828
-  --secondary-color: #1565C0
-  --accent-color: #F9A825
-  --neutral-100: #ffffff
-  --neutral-900: #121212
-  // Typography
+  // Curated brand palette with enhanced contrast and emotional impact
+  --primary-color: #B71C1C      
+  --primary-light: #E53935      
+  --primary-dark: #8B0000       
+  
+  --secondary-color: #0D47A1     
+  --secondary-light: #1976D2    
+  --secondary-dark: #0A2E6B     
+  
+  --accent-color: #FF8F00       
+  --accent-light: #FFC107      
+  --accent-dark: #E65100       
+  
+  --success-color: #2E7D32
+  --warning-color: #F57C00     
+  --error-color: #C62828
+  
+  // Sophisticated neutral palette
+  --neutral-50: #FAFAFA
+  --neutral-100: #F5F5F5
+  --neutral-200: #EEEEEE
+  --neutral-300: #E0E0E0
+  --neutral-400: #BDBDBD
+  --neutral-500: #9E9E9E
+  --neutral-600: #757575
+  --neutral-700: #616161
+  --neutral-800: #424242
+  --neutral-900: #212121
+  
+  // Typography with clear hierarchy
   --heading-font: 'Playfair Display', serif
   --body-font: 'Inter', sans-serif
-  --base-radius: 16px
-  --base-shadow: 0 2px 8px rgba(0,0,0,0.15)
-  --base-gap: 8px
+  
+  // Consistent spacing using 8px grid
+  --space-xs: 4px
+  --space-sm: 8px
+  --space-md: 16px
+  --space-lg: 24px
+  --space-xl: 32px
+  --space-2xl: 48px
+  --space-3xl: 64px
+  
+  // Border radius for depth and modern feel
+  --radius-sm: 8px
+  --radius-md: 16px
+  --radius-lg: 24px
+  --radius-xl: 32px
+  
+  // Sophisticated shadow system
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05)
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.06)
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05)
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1), 0 10px 10px rgba(0, 0, 0, 0.04)
+  --shadow-glow: 0 0 20px rgba(255, 143, 0, 0.3)
+  
+  // Modern gradients for depth
+  --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%)
+  --gradient-secondary: linear-gradient(135deg, var(--secondary-color) 0%, var(--secondary-light) 100%)
+  --gradient-accent: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-light) 100%)
+  --gradient-hero: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 50%, var(--accent-color) 100%)
+  
+  // Animation timing
+  --transition-fast: 0.15s ease-out
+  --transition-normal: 0.3s ease-out
+  --transition-slow: 0.5s ease-out
+  
+  // Legacy variables for backward compatibility
+  --base-radius: var(--radius-md)
+  --base-shadow: var(--shadow-md)
+  --base-gap: var(--space-sm)
+
+// Reset and base styles
+*, *::before, *::after
+  box-sizing: border-box
+  margin: 0
+  padding: 0
+
+html
+  scroll-behavior: smooth
 
 body
   font-family: var(--body-font)
   font-size: 18px
-  line-height: 1.6
+  font-weight: 400
+  line-height: 1.7
   margin: 0
-  background: var(--neutral-100)
+  background: var(--neutral-50)
+  color: var(--neutral-800)
+  overflow-x: hidden
+  -webkit-font-smoothing: antialiased
+  -moz-osx-font-smoothing: grayscale
+
+// Typography hierarchy
+h1, h2, h3, h4, h5, h6
+  font-family: var(--heading-font)
+  font-weight: 600
+  line-height: 1.2
+  margin-bottom: var(--space-md)
   color: var(--neutral-900)
 
+h1 
+  font-size: clamp(2.5rem, 5vw, 4rem)
+  font-weight: 700
+  letter-spacing: -0.02em
+
+h2 
+  font-size: clamp(2rem, 4vw, 3rem)
+  letter-spacing: -0.01em
+
+h3 
+  font-size: clamp(1.5rem, 3vw, 2rem)
+
+h4 
+  font-size: 1.25rem
+
+p, li
+  margin-bottom: var(--space-md)
+  max-width: 65ch
+
+// Links with sophisticated interactions
 a
   text-decoration: none
+  color: var(--secondary-color)
+  transition: all var(--transition-fast)
+  position: relative
+  
+  &:hover, &:focus
+    color: var(--primary-color)
+    
+  &:focus-visible
+    outline: 2px solid var(--accent-color)
+    outline-offset: 4px
+    border-radius: var(--radius-sm)
 
-h1, h2, h3, h4, h5
-  font-family: var(--heading-font)
-  margin-top: 0
-  font-weight: 700
-
-button, [type='button'], [type='submit']
+// Enhanced button system
+button, 
+[type='button'], 
+[type='submit'],
+.btn
+  display: inline-flex
+  align-items: center
+  justify-content: center
+  gap: var(--space-sm)
+  
   cursor: pointer
   border: none
-  border-radius: var(--base-radius)
-  padding: calc(var(--base-gap) * 1.5) calc(var(--base-gap) * 2)
-  font-family: inherit
-  background: var(--secondary-color)
-  color: var(--neutral-100)
-  transition: background 0.2s
+  border-radius: var(--radius-md)
+  padding: var(--space-md) var(--space-lg)
+  font-family: var(--body-font)
+  font-size: 1rem
+  font-weight: 600
+  letter-spacing: 0.01em
+  
+  background: var(--gradient-secondary)
+  color: var(--neutral-50)
+  box-shadow: var(--shadow-md)
+  
+  transition: all var(--transition-fast)
+  transform: translateY(0)
+  
+  svg
+    stroke: currentColor
+    fill: none
+    stroke-width: 2px
+    color: inherit
+  
+  &:hover
+    transform: translateY(-2px)
+    box-shadow: var(--shadow-lg)
+    background: var(--gradient-primary)
+    
+  &:active
+    transform: translateY(0)
+    box-shadow: var(--shadow-sm)
+    
+  &:focus-visible
+    outline: 2px solid var(--accent-color)
+    outline-offset: 4px
+    
+  &:disabled
+    opacity: 0.6
+    cursor: not-allowed
+    transform: none
+    box-shadow: var(--shadow-sm)
 
-button:hover, button:focus
-  background: var(--primary-color)
-  outline: none
+// Button variants
+.btn-primary
+  background: var(--gradient-primary)
+  
+.btn-secondary
+  background: var(--gradient-secondary)
+  
+.btn-accent
+  background: var(--gradient-accent)
+  color: var(--neutral-900)
+  
+.btn-outline
+  background: transparent
+  border: 2px solid var(--secondary-color)
+  color: var(--secondary-color)
+  
+  &:hover
+    background: var(--secondary-color)
+    color: var(--neutral-50)
 
+.btn-ghost
+  background: transparent
+  color: var(--secondary-color)
+  box-shadow: none
+  
+  &:hover
+    background: var(--neutral-100)
+    box-shadow: var(--shadow-sm)
+
+// Form elements with modern styling
+input, select, textarea
+  width: 100%
+  padding: var(--space-md) var(--space-lg)
+  border: 2px solid var(--neutral-300)
+  border-radius: var(--radius-md)
+  font-family: var(--body-font)
+  font-size: 1rem
+  background: var(--neutral-50)
+  color: var(--neutral-800)
+  transition: all var(--transition-fast)
+  
+  &:focus
+    outline: none
+    border-color: var(--secondary-color)
+    background: white
+    box-shadow: 0 0 0 3px rgba(13, 71, 161, 0.1)
+    
+  &::placeholder
+    color: var(--neutral-500)
+    
+  &:invalid
+    border-color: var(--error-color)
+
+// Enhanced focus states for accessibility
 *:focus-visible
   outline: 2px solid var(--accent-color)
   outline-offset: 2px
+  border-radius: var(--radius-sm)
 
+// Respect user preferences
 @media (prefers-reduced-motion: reduce)
   *
-    animation: none !important
-    transition: none !important
+    animation-duration: 0.01ms !important
+    animation-iteration-count: 1 !important
+    transition-duration: 0.01ms !important
+    scroll-behavior: auto !important
 
-.container
-  max-width: 1200px
-  margin: 0 auto
-  padding: 0 calc(var(--base-gap) * 2)
+@media (prefers-contrast: high)
+  :root
+    --neutral-50: #FFFFFF
+    --neutral-900: #000000
 
+// Skip link for accessibility
 .skip-link
   position: absolute
-  left: -999px
-  top: auto
-  width: 1px
-  height: 1px
-  overflow: hidden
+  top: -40px
+  left: 6px
+  background: var(--neutral-900)
+  color: var(--neutral-50)
+  padding: var(--space-sm) var(--space-md)
+  border-radius: var(--radius-sm)
+  text-decoration: none
+  z-index: 1000
+  transition: top var(--transition-fast)
+  
+  &:focus
+    top: 6px
 
-.skip-link:focus
-  left: calc(var(--base-gap) * 2)
-  top: var(--base-gap)
-  width: auto
-  height: auto
-  padding: calc(var(--base-gap) * 1.5)
-  @include mixins.shadow
+// Utility classes
+.container
+  max-width: 1400px
+  margin: 0 auto
+  padding: 0 var(--space-lg)
+  
+  @media (max-width: 768px)
+    padding: 0 var(--space-md)
+
+.visually-hidden
+  position: absolute !important
+  width: 1px !important
+  height: 1px !important
+  padding: 0 !important
+  margin: -1px !important
+  overflow: hidden !important
+  clip: rect(0, 0, 0, 0) !important
+  white-space: nowrap !important
+  border: 0 !important
+
+.text-center
+  text-align: center
+
+.mb-0 
+  margin-bottom: 0
+.mb-1 
+  margin-bottom: var(--space-sm)
+.mb-2 
+  margin-bottom: var(--space-md)
+.mb-3 
+  margin-bottom: var(--space-lg)
+.mb-4 
+  margin-bottom: var(--space-xl)
+
+.mt-0 
+  margin-top: 0
+.mt-1 
+  margin-top: var(--space-sm)
+.mt-2 
+  margin-top: var(--space-md)
+.mt-3 
+  margin-top: var(--space-lg)
+.mt-4 
+  margin-top: var(--space-xl)

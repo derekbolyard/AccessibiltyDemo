@@ -1,7 +1,183 @@
-<div class="dialog" role="dialog" aria-modal="true">
-  <h2>Generate Label</h2>
-  <svg id="barcode"></svg>
-  <canvas id="qrcode"></canvas>
-  <button (click)="downloadPdf()" class="download-btn">Download PDF</button>
-  <button (click)="close.emit()" class="close-btn">Close</button>
+<div class="dialog-overlay" (click)="close.emit()">
+  <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="generator-title" (click)="$event.stopPropagation()">
+    <div class="dialog-header">
+      <div class="header-icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+          <line x1="8" y1="21" x2="16" y2="21" stroke="currentColor" stroke-width="2"/>
+          <line x1="12" y1="17" x2="12" y2="21" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="header-text">
+        <h2 id="generator-title" class="dialog-title">Generate Equipment Label</h2>
+        <p class="dialog-subtitle">Create QR code and barcode labels for {{ tag }}</p>
+      </div>
+      <button 
+        class="close-button" 
+        (click)="close.emit()"
+        aria-label="Close label generator"
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18" stroke="currentColor" stroke-width="2"/>
+          <line x1="6" y1="6" x2="18" y2="18" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="dialog-content">
+      <div class="preview-section">
+        <div class="label-preview">
+          <div class="preview-header">
+            <h3 class="preview-title">Label Preview</h3>
+            <div class="preview-size">
+              Standard Size: {{ labelWidth }}mm × {{ labelHeight }}mm
+            </div>
+          </div>
+          
+          <div class="label-content">
+            <div class="label-top">
+              <div class="company-info">
+                <div class="company-name">{{ companyName }}</div>
+                <div class="equipment-info">
+                  <span class="tag-number">{{ tag }}</span>
+                  <span class="equipment-type">{{ type }} Fire Extinguisher</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="label-codes">
+              <div class="code-section">
+                <div class="code-label">QR Code</div>
+                <canvas id="qrcode" class="qr-canvas"></canvas>
+                <div class="code-description">Scan for details</div>
+              </div>
+              
+              <div class="code-section">
+                <div class="code-label">Barcode</div>
+                <svg id="barcode" class="barcode-svg"></svg>
+                <div class="code-description">{{ tag }}</div>
+              </div>
+            </div>
+            
+            <div class="label-footer">
+              <div class="inspection-date">
+                Last Inspection: {{ lastInspection || 'Not recorded' }}
+              </div>
+              <div class="next-inspection">
+                Next Due: {{ nextInspection || 'Schedule required' }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="options-section">
+        <h3 class="section-title">Label Options</h3>
+        
+        <div class="options-grid">
+          <div class="option-group">
+            <label class="option-label">
+              <span class="label-text">Company Name</span>
+              <input 
+                type="text" 
+                [(ngModel)]="companyName" 
+                class="option-input"
+                placeholder="Your company name"
+              >
+            </label>
+          </div>
+          
+          <div class="option-group">
+            <label class="option-label">
+              <span class="label-text">Label Size</span>
+              <select [(ngModel)]="selectedSize" class="option-select" (change)="updateLabelSize()">
+                <option value="standard">Standard (50mm × 30mm)</option>
+                <option value="large">Large (70mm × 40mm)</option>
+                <option value="small">Small (40mm × 25mm)</option>
+              </select>
+            </label>
+          </div>
+          
+          <div class="option-group">
+            <label class="option-label">
+              <span class="label-text">Print Quality</span>
+              <select [(ngModel)]="printQuality" class="option-select">
+                <option value="high">High (300 DPI)</option>
+                <option value="medium">Medium (200 DPI)</option>
+                <option value="draft">Draft (150 DPI)</option>
+              </select>
+            </label>
+          </div>
+          
+          <div class="option-group">
+            <label class="checkbox-label">
+              <input 
+                type="checkbox" 
+                [(ngModel)]="includeInstructions" 
+                class="checkbox-input"
+              >
+              <span class="checkmark"></span>
+              <span class="checkbox-text">Include usage instructions</span>
+            </label>
+          </div>
+          
+          <div class="option-group">
+            <label class="checkbox-label">
+              <input 
+                type="checkbox" 
+                [(ngModel)]="includeBranding" 
+                class="checkbox-input"
+              >
+              <span class="checkmark"></span>
+              <span class="checkbox-text">Include company logo</span>
+            </label>
+          </div>
+          
+          <div class="option-group">
+            <label class="checkbox-label">
+              <input 
+                type="checkbox" 
+                [(ngModel)]="weatherproof" 
+                class="checkbox-input"
+              >
+              <span class="checkmark"></span>
+              <span class="checkbox-text">Weatherproof material</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dialog-actions">
+      <button class="btn btn-outline" (click)="close.emit()">
+        Cancel
+      </button>
+      <button class="btn btn-secondary" (click)="previewLabel()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="2"/>
+          <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+        </svg>
+        Preview
+      </button>
+      <button class="btn btn-primary" (click)="downloadPdf()" [disabled]="isGenerating">
+        <span *ngIf="!isGenerating" class="download-content">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" stroke-width="2"/>
+            <polyline points="7,10 12,15 17,10" stroke="currentColor" stroke-width="2"/>
+            <line x1="12" y1="15" x2="12" y2="3" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          Download PDF
+        </span>
+        <span *ngIf="isGenerating" class="generating-content">
+          <svg class="spinner" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none" stroke-dasharray="31.416" stroke-dashoffset="31.416">
+              <animate attributeName="stroke-dasharray" dur="2s" values="0 31.416;15.708 15.708;0 31.416" repeatCount="indefinite"/>
+              <animate attributeName="stroke-dashoffset" dur="2s" values="0;-15.708;-31.416" repeatCount="indefinite"/>
+            </circle>
+          </svg>
+          Generating...
+        </span>
+      </button>
+    </div>
+  </div>
 </div>

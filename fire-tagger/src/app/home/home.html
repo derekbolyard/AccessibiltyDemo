@@ -1,25 +1,184 @@
-<section class="hero">
-  <h1>FireTagger</h1>
-  <p class="tagline">Snap &amp; scan fire extinguisher inspections in seconds.</p>
-  <a routerLink="/scan" class="cta">Start Scanning</a>
+<!-- Hero Section -->
+<section class="hero" role="banner">
+  <div class="hero-background">
+    <div class="hero-shapes"></div>
+  </div>
+  
+  <div class="hero-content container">
+    <div class="hero-text">
+      <h1 class="hero-title">
+        <span class="hero-title-main">FireTagger</span>
+        <span class="hero-title-sub">Safety Made Simple</span>
+      </h1>
+      
+      <p class="hero-description">
+        Revolutionary fire extinguisher management powered by AI. 
+        Snap, scan, and ensure compliance in seconds with intelligent 
+        OCR technology and automated workflows.
+      </p>
+      
+      <div class="hero-actions">
+        <a routerLink="/scan" class="cta-primary">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="2"/>
+            <circle cx="12" cy="13" r="4" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          Start Scanning
+        </a>
+        
+        <a routerLink="/inventory" class="cta-secondary">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2"/>
+            <polyline points="14,2 14,8 20,8" stroke="currentColor" stroke-width="2"/>
+            <line x1="16" y1="13" x2="8" y2="13" stroke="currentColor" stroke-width="2"/>
+            <line x1="16" y1="17" x2="8" y2="17" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          View Inventory
+        </a>
+      </div>
+      
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-number">10k+</span>
+          <span class="stat-label">Devices Scanned</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">99.9%</span>
+          <span class="stat-label">Accuracy Rate</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">500+</span>
+          <span class="stat-label">Companies</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="hero-visual">
+      <div class="phone-mockup">
+        <div class="phone-screen">
+          <div class="scan-animation">
+            <div class="scan-target"></div>
+            <div class="scan-line"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
-<section class="features container">
-  <ul>
-    <li>
-      <svg width="32" height="32" aria-hidden="true" focusable="false"><circle cx="16" cy="16" r="16" fill="var(--accent-color)"/></svg>
-      OCR tag dates &amp; serials
-    </li>
-    <li>
-      <svg width="32" height="32" aria-hidden="true" focusable="false"><rect width="32" height="32" fill="var(--accent-color)"/></svg>
-      Cloud reminders
-    </li>
-    <li>
-      <svg width="32" height="32" aria-hidden="true" focusable="false"><polygon points="16,0 32,32 0,32" fill="var(--accent-color)"/></svg>
-      QR code pass/fail
-    </li>
-    <li>
-      <svg width="32" height="32" aria-hidden="true" focusable="false"><path d="M0 0h32v32H0z" fill="var(--accent-color)"/></svg>
-      OSHA-ready logs
-    </li>
-  </ul>
+
+<!-- Features Section -->
+<section class="features" role="region" aria-labelledby="features-heading">
+  <div class="container">
+    <header class="section-header">
+      <h2 id="features-heading" class="section-title">
+        Powerful Features for Fire Safety Management
+      </h2>
+      <p class="section-description">
+        Everything you need to maintain compliance and ensure safety
+      </p>
+    </header>
+    
+    <div class="features-grid">
+      <article class="feature-card" data-feature="ocr">
+        <div class="feature-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="currentColor" stroke-width="2"/>
+            <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <h3 class="feature-title">AI-Powered OCR</h3>
+        <p class="feature-description">
+          Instantly extract dates, serial numbers, and inspection data 
+          from any fire extinguisher tag with 99.9% accuracy.
+        </p>
+        <ul class="feature-benefits">
+          <li>Automatic data extraction</li>
+          <li>Multiple language support</li>
+          <li>Handles damaged or faded tags</li>
+        </ul>
+      </article>
+      
+      <article class="feature-card" data-feature="cloud">
+        <div class="feature-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <h3 class="feature-title">Smart Reminders</h3>
+        <p class="feature-description">
+          Never miss an inspection deadline with intelligent scheduling 
+          and automated notifications.
+        </p>
+        <ul class="feature-benefits">
+          <li>Automated email alerts</li>
+          <li>Custom reminder schedules</li>
+          <li>Team collaboration tools</li>
+        </ul>
+      </article>
+      
+      <article class="feature-card" data-feature="qr">
+        <div class="feature-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="3" y="3" width="5" height="5" stroke="currentColor" stroke-width="2"/>
+            <rect x="3" y="16" width="5" height="5" stroke="currentColor" stroke-width="2"/>
+            <rect x="16" y="3" width="5" height="5" stroke="currentColor" stroke-width="2"/>
+            <path d="m5 16 3-3 3 3m-5-6h4m2-2h2m3 0h2v2m-2 3h2v2m-2 3h2" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <h3 class="feature-title">QR Code Generation</h3>
+        <p class="feature-description">
+          Generate instant pass/fail QR codes for quick status checking 
+          and seamless workflow integration.
+        </p>
+        <ul class="feature-benefits">
+          <li>Instant status verification</li>
+          <li>Mobile-friendly scanning</li>
+          <li>Custom branding options</li>
+        </ul>
+      </article>
+      
+      <article class="feature-card" data-feature="compliance">
+        <div class="feature-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2"/>
+            <polyline points="14,2 14,8 20,8" stroke="currentColor" stroke-width="2"/>
+            <line x1="16" y1="13" x2="8" y2="13" stroke="currentColor" stroke-width="2"/>
+            <line x1="16" y1="17" x2="8" y2="17" stroke="currentColor" stroke-width="2"/>
+            <polyline points="10,9 11,10 13,8" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <h3 class="feature-title">OSHA-Ready Reports</h3>
+        <p class="feature-description">
+          Generate comprehensive compliance reports that meet OSHA 
+          standards and pass any inspection.
+        </p>
+        <ul class="feature-benefits">
+          <li>One-click report generation</li>
+          <li>Multiple export formats</li>
+          <li>Audit trail documentation</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-content">
+      <h2 class="cta-title">Ready to Transform Your Fire Safety Management?</h2>
+      <p class="cta-description">
+        Join thousands of safety professionals who trust FireTagger 
+        for their compliance needs.
+      </p>
+      <div class="cta-actions">
+        <a routerLink="/scan" class="btn btn-primary">
+          Get Started Now
+        </a>
+        <a routerLink="/inventory" class="btn btn-outline">
+          View Demo
+        </a>
+      </div>
+    </div>
+  </div>
 </section>

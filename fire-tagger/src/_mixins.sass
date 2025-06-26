@@ -1,5 +1,100 @@
-@mixin rounded($r: var(--base-radius))
+// Enhanced mixin system for sophisticated design
+
+@mixin rounded($r: var(--radius-md))
   border-radius: $r
 
-@mixin shadow
-  box-shadow: var(--base-shadow)
+@mixin shadow($level: 'md')
+  @if $level == 'sm'
+    box-shadow: var(--shadow-sm)
+  @else if $level == 'md'
+    box-shadow: var(--shadow-md)
+  @else if $level == 'lg'
+    box-shadow: var(--shadow-lg)
+  @else if $level == 'xl'
+    box-shadow: var(--shadow-xl)
+  @else if $level == 'glow'
+    box-shadow: var(--shadow-glow)
+
+@mixin glass
+  background: rgba(255, 255, 255, 0.1)
+  backdrop-filter: blur(10px)
+  border: 1px solid rgba(255, 255, 255, 0.2)
+
+@mixin card
+  background: white
+  border-radius: var(--radius-lg)
+  box-shadow: var(--shadow-md)
+  border: 1px solid var(--neutral-200)
+  transition: all var(--transition-fast)
+  
+  &:hover
+    box-shadow: var(--shadow-lg)
+    transform: translateY(-2px)
+
+@mixin floating-action
+  position: fixed
+  bottom: var(--space-xl)
+  right: var(--space-xl)
+  width: 56px
+  height: 56px
+  border-radius: 50%
+  background: var(--gradient-primary)
+  color: white
+  border: none
+  box-shadow: var(--shadow-lg)
+  cursor: pointer
+  z-index: 100
+  transition: all var(--transition-fast)
+  
+  &:hover
+    transform: scale(1.1)
+    box-shadow: var(--shadow-xl)
+
+@mixin gradient-text($gradient)
+  background: $gradient
+  -webkit-background-clip: text
+  -webkit-text-fill-color: transparent
+  background-clip: text
+
+@mixin responsive-grid($min-width: 280px)
+  display: grid
+  grid-template-columns: repeat(auto-fit, minmax($min-width, 1fr))
+  gap: var(--space-lg)
+
+@mixin fade-in($duration: var(--transition-normal))
+  opacity: 0
+  animation: fadeIn $duration ease-out forwards
+
+@keyframes fadeIn
+  to
+    opacity: 1
+
+@mixin slide-up($duration: var(--transition-normal))
+  transform: translateY(20px)
+  opacity: 0
+  animation: slideUp $duration ease-out forwards
+
+@keyframes slideUp
+  to
+    transform: translateY(0)
+    opacity: 1
+
+@mixin pulse
+  animation: pulse 2s infinite
+
+@keyframes pulse
+  0%, 100%
+    transform: scale(1)
+  50%
+    transform: scale(1.05)
+
+@mixin loading-shimmer
+  background: linear-gradient(90deg, var(--neutral-200) 25%, var(--neutral-300) 50%, var(--neutral-200) 75%)
+  background-size: 200% 100%
+  animation: shimmer 2s infinite
+
+@keyframes shimmer
+  0%
+    background-position: -200% 0
+  100%
+    background-position: 200% 0

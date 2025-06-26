@@ -1,30 +1,268 @@
-<section class="inventory container">
-  <header class="toolbar">
-    <input type="text" placeholder="Search" [(ngModel)]="searchTerm" (input)="filter()" aria-label="Search"/>
-    <select [(ngModel)]="filters.location" (change)="filter()" aria-label="Location filter">
-      <option value="">All Locations</option>
-      <option *ngFor="let l of locations" [value]="l">{{l}}</option>
-    </select>
-    <select [(ngModel)]="filters.type" (change)="filter()" aria-label="Type filter">
-      <option value="">All Types</option>
-      <option *ngFor="let t of types" [value]="t">{{t}}</option>
-    </select>
-    <select [(ngModel)]="filters.status" (change)="filter()" aria-label="Status filter">
-      <option value="">All Statuses</option>
-      <option *ngFor="let s of statuses" [value]="s">{{s}}</option>
-    </select>
-    <button (click)="openImport()" class="import-btn">Import</button>
-    <button (click)="openLabelGenerator()" class="label-btn">Labels</button>
-  </header>
-
-  <div class="grid" role="list">
-    <article *ngFor="let item of filtered" class="card" role="listitem">
-      <h3>{{item.tag}}</h3>
-      <p>{{item.type}} - {{item.status}}</p>
-      <p>{{item.location.company}} / {{item.location.site}} / {{item.location.area}}</p>
-    </article>
+<!-- Page Header -->
+<div class="page-header">
+  <div class="container">
+    <div class="header-content">
+      <div class="header-text">
+        <h1 class="page-title">Fire Extinguisher Inventory</h1>
+        <p class="page-description">
+          Manage and track your fire extinguisher assets with comprehensive filtering and reporting
+        </p>
+      </div>
+      <div class="header-stats">
+        <div class="stat-card">
+          <span class="stat-number">{{ items.length }}</span>
+          <span class="stat-label">Total Items</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number">{{ getActiveCount() }}</span>
+          <span class="stat-label">Active</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number">{{ getServiceCount() }}</span>
+          <span class="stat-label">Need Service</span>
+        </div>
+      </div>
+    </div>
   </div>
+</div>
 
-  <import-dialog *ngIf="importing" (done)="closeImport($event)"></import-dialog>
-  <label-generator *ngIf="labeling" (close)="labeling=false"></label-generator>
+<!-- Main Controls Section -->
+<section class="controls-section">
+  <div class="container">
+    <!-- Search Bar Row -->
+    <div class="search-row">
+      <div class="search-bar">
+        <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+          <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2"/>
+        </svg>
+        <input 
+          type="text" 
+          placeholder="Search by tag, type, or location..." 
+          [(ngModel)]="searchTerm" 
+          (input)="filter()"
+          class="search-input"
+          aria-label="Search inventory"
+        >
+      </div>
+      <div class="primary-actions">
+        <button class="btn btn-primary" (click)="router.navigate(['/scan'])">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" stroke-width="2"/>
+            <line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          Add Item
+        </button>
+        <button class="btn btn-secondary" (click)="exportData()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          Export
+        </button>
+      </div>
+    </div>
+
+    <!-- Filters Row -->
+    <div class="filters-row">
+      <div class="filter-controls">
+        <select [(ngModel)]="filters.location" (change)="filter()" aria-label="Filter by location">
+          <option value="">All Locations</option>
+          <option *ngFor="let loc of locations" [value]="loc">{{ loc }}</option>
+        </select>
+        
+        <select [(ngModel)]="filters.type" (change)="filter()" aria-label="Filter by type">
+          <option value="">All Types</option>
+          <option *ngFor="let type of types" [value]="type">{{ type }}</option>
+        </select>
+        
+        <select [(ngModel)]="filters.status" (change)="filter()" aria-label="Filter by status">
+          <option value="">All Statuses</option>
+          <option *ngFor="let status of statuses" [value]="status">{{ status }}</option>
+        </select>
+      </div>
+      
+      <div class="filter-actions">
+        <button class="btn btn-outline" (click)="clearFilters()" [disabled]="!hasActiveFilters()">
+          Clear Filters
+        </button>
+        <button class="btn btn-primary" (click)="generateLabels()" [disabled]="selectedItems.length === 0">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          Generate Labels ({{ selectedItems.length }})
+        </button>
+      </div>
+    </div>
+  </div>
 </section>
+
+<!-- Results Summary Section -->
+<section class="results-section" *ngIf="items.length > 0">
+  <div class="container">
+    <div class="results-info">
+      <div class="results-count">
+        <span class="count-text">Showing {{ filtered.length }} of {{ items.length }} items</span>
+      </div>
+      <div class="bulk-actions" *ngIf="selectedItems.length > 0">
+        <span class="selected-count">{{ selectedItems.length }} selected</span>
+        <button class="btn-link" (click)="selectAll()" *ngIf="selectedItems.length < filtered.length">
+          Select All ({{ filtered.length }})
+        </button>
+        <button class="btn-link" (click)="deselectAll()" *ngIf="selectedItems.length > 0">
+          Deselect All
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Main Inventory Grid -->
+<section class="inventory-section" role="main">
+  <div class="container">
+    <!-- Empty State -->
+    <div *ngIf="items.length === 0" class="empty-state">
+      <div class="empty-icon">
+        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </div>
+      <h3 class="empty-title">No inventory items found</h3>
+      <p class="empty-description">
+        Start by scanning fire extinguishers to build your inventory database.
+      </p>
+      <div class="empty-actions">
+        <button class="btn btn-primary" (click)="router.navigate(['/scan'])">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M3 7V5a2 2 0 012-2h2M7 17H5a2 2 0 01-2-2v-2M17 17h2a2 2 0 002-2v-2M21 7V5a2 2 0 00-2-2h-2" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          Start Scanning
+        </button>
+        <button class="btn btn-outline" (click)="importing = true">
+          Import Data
+        </button>
+      </div>
+    </div>
+
+    <!-- No Results State -->
+    <div *ngIf="items.length > 0 && filtered.length === 0" class="no-results-state">
+      <div class="no-results-icon">
+        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+          <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </div>
+      <h3 class="no-results-title">No items match your filters</h3>
+      <p class="no-results-description">
+        Try adjusting your search terms or clearing some filters.
+      </p>
+      <button class="btn btn-outline" (click)="clearFilters()">Clear All Filters</button>
+    </div>
+
+    <!-- Inventory Grid -->
+    <div *ngIf="filtered.length > 0" class="inventory-grid" role="list">
+      <article 
+        *ngFor="let item of filtered; let i = index; trackBy: trackByTag" 
+        class="inventory-card"
+        role="listitem"
+        [class.selected]="isSelected(item)"
+        [class.needs-service]="needsService(item)"
+        [class.expired]="isExpired(item)"
+      >
+        <!-- Selection Checkbox -->
+        <div class="card-selection">
+          <label class="checkbox-label" [attr.aria-label]="'Select ' + item.tag">
+            <input 
+              type="checkbox" 
+              [checked]="isSelected(item)"
+              (change)="toggleSelection(item)"
+              class="selection-checkbox"
+            >
+            <span class="checkbox-indicator"></span>
+          </label>
+        </div>
+
+        <!-- Card Header -->
+        <div class="card-header">
+          <div class="tag-section">
+            <h3 class="item-tag">{{ item.tag }}</h3>
+            <div class="status-badge" [class]="'status-' + item.status.toLowerCase().replace(' ', '-')">
+              {{ item.status }}
+            </div>
+          </div>
+          <div class="type-info">
+            <span class="item-type">{{ item.type }}</span>
+            <span class="item-capacity" *ngIf="item.capacity">{{ item.capacity }}</span>
+          </div>
+        </div>
+
+        <!-- Card Content -->
+        <div class="card-content">
+          <div class="location-info">
+            <div class="location-label">Location</div>
+            <div class="location-value">{{ formatLocation(item.location) }}</div>
+          </div>
+
+          <div class="service-info">
+            <div class="service-row">
+              <span class="service-label">Last Scanned:</span>
+              <span class="service-value">{{ formatDate(item.lastScanned) }}</span>
+            </div>
+            <div class="service-row" *ngIf="item.nextService">
+              <span class="service-label">Next Service:</span>
+              <span class="service-value" [class.overdue]="isOverdue(item.nextService)">
+                {{ formatDate(item.nextService) }}
+              </span>
+            </div>
+            <div class="service-row" *ngIf="item.manufacture">
+              <span class="service-label">Manufactured:</span>
+              <span class="service-value">{{ formatDate(item.manufacture) }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card Actions -->
+        <div class="card-actions">
+          <div class="action-wrapper">
+            <button class="btn-icon" (click)="editItem(item)" [attr.aria-label]="'Edit ' + item.tag">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" stroke="currentColor" stroke-width="2"/>
+                <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" stroke="currentColor" stroke-width="2"/>
+              </svg>
+            </button>
+            <span class="action-label">Edit</span>
+          </div>
+          
+          <div class="action-wrapper">
+            <button class="btn-icon" (click)="viewHistory(item)" [attr.aria-label]="'View history for ' + item.tag">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                <polyline points="12,6 12,12 16,14" stroke="currentColor" stroke-width="2"/>
+              </svg>
+            </button>
+            <span class="action-label">History</span>
+          </div>
+          
+          <div class="action-wrapper">
+            <button class="btn-icon danger" (click)="deleteItem(item)" [attr.aria-label]="'Delete ' + item.tag">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6h14zM10 11v6M14 11v6" stroke="currentColor" stroke-width="2"/>
+              </svg>
+            </button>
+            <span class="action-label danger">Delete</span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- Floating Action Button for Mobile -->
+<button class="fab" (click)="router.navigate(['/scan'])" [attr.aria-label]="'Add new item'">
+  <span class="fab-content">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <line x1="12" y1="5" x2="12" y2="19" stroke="currentColor" stroke-width="2"/>
+      <line x1="5" y1="12" x2="19" y2="12" stroke="currentColor" stroke-width="2"/>
+    </svg>
+    <span class="fab-label">Add</span>
+  </span>
+</button>
